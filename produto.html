@@ -17,7 +17,7 @@
       f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NTLKR2NJ');
   </script>
-  <!-- End GTM -->
+  <!-- End Google Tag Manager -->
 
   <style>
     body {
@@ -33,20 +33,18 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    h1 { margin-bottom: 10px; }
-    .category { color: #777; margin-bottom: 15px; }
     .price {
       color: green;
       font-size: 22px;
-      margin-bottom: 20px;
+      margin: 10px 0;
     }
     button {
-      padding: 12px 20px;
-      font-size: 16px;
       background: #007bff;
       color: #fff;
       border: none;
-      border-radius: 6px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
@@ -57,68 +55,86 @@
 
 <body>
 
-<div class="product">
-  <h1 id="item_name"></h1>
-  <div class="category" id="item_category"></div>
-  <div class="price" id="item_price"></div>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTLKR2NJ"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 
-  <button id="addToCart">Adicionar ao carrinho</button>
+<div class="product">
+  <h1 id="product-name"></h1>
+  <p id="product-category"></p>
+  <div class="price" id="product-price"></div>
+  <button id="add-to-cart">Adicionar ao carrinho</button>
 </div>
 
 <script>
-  /* ====== BASE DE PRODUTOS (demo) ====== */
+  // Produtos fake (demo)
   const products = {
-    A001: { name: "Wireless Headphones Pro", category: "Audio", price: 99.00 },
-    A002: { name: "Noise Cancelling Headphones", category: "Audio", price: 129.00 },
-    W001: { name: "Smartwatch Active", category: "Wearables", price: 149.00 },
-    C001: { name: "Fast Charger 65W", category: "Charging", price: 39.00 },
-    M001: { name: "Shockproof Phone Case", category: "Mobile Accessories", price: 25.00 }
+    A001: {
+      item_id: 'A001',
+      item_name: 'Wireless Headphones Pro',
+      item_category: 'Audio',
+      price: 99.00
+    }
   };
 
-  /* ====== LÊ PRODUTO DA URL ====== */
+  // Captura ID do produto pela URL
   const params = new URLSearchParams(window.location.search);
-  const productId = params.get("id") || "A001";
+  const productId = params.get('id');
   const product = products[productId];
 
-  /* ====== RENDER ====== */
-  document.getElementById("item_name").innerText = product.name;
-  document.getElementById("item_category").innerText = product.category;
-  document.getElementById("item_price").innerText = `US$ ${product.price.toFixed(2)}`;
+  // Renderiza produto
+  if (product) {
+    document.getElementById('product-name').innerText = product.item_name;
+    document.getElementById('product-category').innerText = product.item_category;
+    document.getElementById('product-price').innerText = `US$ ${product.price.toFixed(2)}`;
 
-  /* ====== VIEW_ITEM (GA4) ====== */
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "view_item",
-    ecommerce: {
-      currency: "USD",
-      value: product.price,
-      items: [{
-        item_id: productId,
-        item_name: product.name,
-        item_category: product.category,
-        price: product.price,
-        quantity: 1
-      }]
-    }
-  });
-
-  /* ====== ADD_TO_CART ====== */
-  document.getElementById("addToCart").addEventListener("click", function () {
+    // Dispara view_item
+    window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: "add_to_cart",
+      event: 'view_item',
       ecommerce: {
-        currency: "USD",
+        currency: 'USD',
+        value: product.price,
+        items: [product]
+      }
+    });
+  }
+
+  // Add to cart
+  document.getElementById('add-to-cart').addEventListener('click', function () {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const existingItem = cart.find(item => item.item_id === product.item_id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({
+        ...product,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Dispara add_to_cart
+    window.dataLayer.push({
+      event: 'add_to_cart',
+      ecommerce: {
+        currency: 'USD',
         value: product.price,
         items: [{
-          item_id: productId,
-          item_name: product.name,
-          item_category: product.category,
-          price: product.price,
+          ...product,
           quantity: 1
         }]
       }
     });
-    alert("Produto adicionado ao carrinho (evento enviado)");
+
+    // Redireciona para carrinho
+    window.location.href = 'carrinho.html';
   });
 </script>
 
