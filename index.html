@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Accessory Store – Produto</title>
+  <title>Accessory Store – Tech Accessories</title>
 
   <!-- Google Tag Manager -->
   <script>
@@ -10,68 +10,118 @@
       w[l]=w[l]||[];
       w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
       var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),
-          dl=l!='dataLayer'?'&l='+l:'';
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
       j.async=true;
       j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
       f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NTLKR2NJ');
   </script>
-  <!-- End Google Tag Manager -->
+  <!-- End GTM -->
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
       background: #f5f5f5;
-    }
-    .product {
-      background: #fff;
-      padding: 30px;
-      max-width: 500px;
-      margin: auto;
-      border-radius: 8px;
+      margin: 0;
+      padding: 40px;
     }
     h1 {
-      margin-top: 0;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 40px auto;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .category {
+      font-size: 12px;
+      color: #777;
     }
     .price {
-      font-size: 22px;
-      color: #2c7;
-      margin: 15px 0;
+      color: green;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    a {
+      text-decoration: none;
+      color: #1a73e8;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
 
-<!-- Google Tag Manager (noscript) -->
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-<!-- End Google Tag Manager (noscript) -->
+<h1>Accessory Store – Tech Accessories</h1>
 
-<div class="product">
-  <h1>Pulseira de Couro</h1>
-  <p>Pulseira masculina em couro legítimo.</p>
-  <div class="price">R$ 99,90</div>
-</div>
+<div class="grid" id="product-list"></div>
 
 <script>
+  const products = [
+    // Audio
+    {id:'A001', name:'Wireless Headphones Pro', category:'Audio', price:99},
+    {id:'A002', name:'Noise Cancelling Headphones', category:'Audio', price:129},
+    {id:'A003', name:'Bluetooth Earbuds X', category:'Audio', price:79},
+    {id:'A004', name:'Gaming Headset RGB', category:'Audio', price:89},
+    {id:'A005', name:'Portable Bluetooth Speaker', category:'Audio', price:69},
+
+    // Wearables
+    {id:'W001', name:'Smartwatch Active', category:'Wearables', price:149},
+    {id:'W002', name:'Smartwatch Pro', category:'Wearables', price:199},
+    {id:'W003', name:'Fitness Tracker Band', category:'Wearables', price:59},
+    {id:'W004', name:'Smart Ring Health', category:'Wearables', price:129},
+    {id:'W005', name:'Kids Smartwatch', category:'Wearables', price:79},
+
+    // Charging
+    {id:'C001', name:'Fast Charger 65W', category:'Charging', price:39},
+    {id:'C002', name:'Wireless Charging Pad', category:'Charging', price:49},
+    {id:'C003', name:'USB-C Cable Premium', category:'Charging', price:19},
+    {id:'C004', name:'Car Charger Dual Port', category:'Charging', price:29},
+    {id:'C005', name:'Power Bank 20000mAh', category:'Charging', price:59},
+
+    // Mobile Accessories
+    {id:'M001', name:'Shockproof Phone Case', category:'Mobile Accessories', price:25},
+    {id:'M002', name:'Magnetic Phone Holder', category:'Mobile Accessories', price:22},
+    {id:'M003', name:'Screen Protector Glass', category:'Mobile Accessories', price:15},
+    {id:'M004', name:'Phone Stand Adjustable', category:'Mobile Accessories', price:18},
+    {id:'M005', name:'Waterproof Phone Pouch', category:'Mobile Accessories', price:20},
+  ];
+
+  const container = document.getElementById('product-list');
+
+  products.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="category">${p.category}</div>
+      <h3>${p.name}</h3>
+      <div class="price">US$ ${p.price.toFixed(2)}</div>
+      <a href="produto.html?id=${p.id}">Ver produto</a>
+    `;
+    container.appendChild(card);
+  });
+
+  // GA4 - view_item_list
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "view_item",
+  dataLayer.push({
+    event: 'view_item_list',
     ecommerce: {
-      currency: "BRL",
-      value: 99.90,
-      items: [{
-        item_id: "SKU_001",
-        item_name: "Pulseira de Couro",
-        item_category: "Acessórios",
-        price: 99.90,
-        quantity: 1
-      }]
+      item_list_name: 'Homepage – Tech Accessories',
+      items: products.map(p => ({
+        item_id: p.id,
+        item_name: p.name,
+        item_category: p.category,
+        price: p.price,
+        currency: 'USD'
+      }))
     }
   });
 </script>
