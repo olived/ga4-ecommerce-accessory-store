@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Accessory Store – Produto</title>
+  <title>Produto | Accessory Store</title>
 
   <!-- Google Tag Manager -->
   <script>
@@ -17,7 +17,7 @@
       f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NTLKR2NJ');
   </script>
-  <!-- End Google Tag Manager -->
+  <!-- End GTM -->
 
   <style>
     body {
@@ -28,114 +28,68 @@
     .product {
       background: #fff;
       padding: 30px;
-      max-width: 500px;
+      max-width: 400px;
       margin: auto;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .price {
-      color: green;
-      font-size: 22px;
-      margin: 10px 0;
     }
     button {
-      background: #007bff;
+      background: #0d6efd;
       color: #fff;
       border: none;
       padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 5px;
       cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
+      border-radius: 4px;
+      font-size: 16px;
     }
   </style>
 </head>
 
 <body>
 
-<!-- Google Tag Manager (noscript) -->
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTLKR2NJ"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-<!-- End Google Tag Manager (noscript) -->
-
 <div class="product">
-  <h1 id="product-name"></h1>
-  <p id="product-category"></p>
-  <div class="price" id="product-price"></div>
-  <button id="add-to-cart">Adicionar ao carrinho</button>
+  <h1>Wireless Headphones Pro</h1>
+  <p>Categoria: Audio</p>
+  <p><strong>US$ 99</strong></p>
+
+  <button onclick="addToCart()">Adicionar ao carrinho</button>
 </div>
 
 <script>
-  // Produtos fake (demo)
-  const products = {
-    A001: {
-      item_id: 'A001',
-      item_name: 'Wireless Headphones Pro',
-      item_category: 'Audio',
-      price: 99.00
+  function addToCart() {
+    const product = {
+      item_id: "A001",
+      item_name: "Wireless Headphones Pro",
+      item_category: "Audio",
+      price: 99,
+      quantity: 1
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+
+    const existing = cart.find(item => item.item_id === product.item_id);
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push(product);
     }
-  };
 
-  // Captura ID do produto pela URL
-  const params = new URLSearchParams(window.location.search);
-  const productId = params.get('id');
-  const product = products[productId];
+    localStorage.setItem("cart_items", JSON.stringify(cart));
 
-  // Renderiza produto
-  if (product) {
-    document.getElementById('product-name').innerText = product.item_name;
-    document.getElementById('product-category').innerText = product.item_category;
-    document.getElementById('product-price').innerText = `US$ ${product.price.toFixed(2)}`;
-
-    // Dispara view_item
+    // GA4 – add_to_cart
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: 'view_item',
+      event: "add_to_cart",
       ecommerce: {
-        currency: 'USD',
+        currency: "USD",
         value: product.price,
         items: [product]
       }
     });
+
+    // Redireciona para o carrinho
+    window.location.href = "carrinho.html";
   }
-
-  // Add to cart
-  document.getElementById('add-to-cart').addEventListener('click', function () {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    const existingItem = cart.find(item => item.item_id === product.item_id);
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({
-        ...product,
-        quantity: 1
-      });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    // Dispara add_to_cart
-    window.dataLayer.push({
-      event: 'add_to_cart',
-      ecommerce: {
-        currency: 'USD',
-        value: product.price,
-        items: [{
-          ...product,
-          quantity: 1
-        }]
-      }
-    });
-
-    // Redireciona para carrinho
-    window.location.href = 'carrinho.html';
-  });
 </script>
 
 </body>
