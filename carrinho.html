@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Accessory Store – Carrinho</title>
+  <title>Carrinho | Accessory Store</title>
 
   <!-- Google Tag Manager -->
   <script>
@@ -28,42 +28,22 @@
     .cart {
       background: #fff;
       padding: 30px;
-      max-width: 600px;
+      max-width: 500px;
       margin: auto;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .item {
       border-bottom: 1px solid #ddd;
-      padding: 15px 0;
-    }
-    .item:last-child {
-      border-bottom: none;
-    }
-    .price {
-      color: green;
-      font-weight: bold;
+      padding: 10px 0;
     }
     .total {
+      font-size: 18px;
       margin-top: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .empty {
-      text-align: center;
-      color: #666;
     }
   </style>
 </head>
 
 <body>
-
-<!-- Google Tag Manager (noscript) -->
-<noscript>
-  <iframe src="https://www.googletmanager.com/ns.html?id=GTM-NTLKR2NJ"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-<!-- End GTM (noscript) -->
 
 <div class="cart">
   <h1>Carrinho</h1>
@@ -72,6 +52,42 @@
 </div>
 
 <script>
-  window.dataLayer = window.dataLayer || [];
+  const cart = JSON.parse(localStorage.getItem("cart_items")) || [];
+  const container = document.getElementById("cart-items");
+  const totalEl = document.getElementById("cart-total");
 
-  const cartContainer = document.getElementById('
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Seu carrinho está vazio.</p>";
+  } else {
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+
+      container.innerHTML += `
+        <div class="item">
+          <strong>${item.item_name}</strong><br>
+          Categoria: ${item.item_category}<br>
+          Quantidade: ${item.quantity}<br>
+          US$ ${item.price}
+        </div>
+      `;
+    });
+
+    totalEl.innerHTML = `<strong>Total: US$ ${total}</strong>`;
+
+    // GA4 – view_cart
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "view_cart",
+      ecommerce: {
+        currency: "USD",
+        value: total,
+        items: cart
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
