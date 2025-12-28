@@ -25,88 +25,72 @@
       background: #f5f5f5;
       padding: 40px;
     }
-
-    .cart {
+    .box {
       background: #fff;
       padding: 30px;
-      max-width: 700px;
+      max-width: 600px;
       margin: auto;
       border-radius: 8px;
     }
-
     .item {
-      border-bottom: 1px solid #eee;
-      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
     }
-
-    .item:last-child {
-      border-bottom: none;
-    }
-
     .price {
       color: green;
       font-weight: bold;
-    }
-
-    .total {
-      font-size: 20px;
-      margin-top: 20px;
-      text-align: right;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="cart">
-    <h1>Carrinho</h1>
-    <div id="cart-items"></div>
-    <div class="total" id="cart-total"></div>
-  </div>
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTLKR2NJ"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
 
-  <script>
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const container = document.getElementById("cart-items");
-    let totalValue = 0;
+<div class="box">
+  <h1>Carrinho</h1>
+  <div id="cart"></div>
+</div>
 
-    if (cart.length === 0) {
-      container.innerHTML = "<p>Seu carrinho está vazio.</p>";
-    } else {
-      cart.forEach(item => {
-        totalValue += item.price * item.quantity;
+<script>
+  const cartContainer = document.getElementById("cart");
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p>Seu carrinho está vazio.</p>";
+  } else {
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+
+      cartContainer.innerHTML += `
+        <div class="item">
           <strong>${item.item_name}</strong><br>
           Categoria: ${item.item_category}<br>
           Quantidade: ${item.quantity}<br>
           <span class="price">US$ ${item.price}</span>
-        `;
-        container.appendChild(div);
-      });
+        </div>
+      `;
+    });
 
-      document.getElementById("cart-total").innerText =
-        `Total: US$ ${totalValue.toFixed(2)}`;
-    }
-
-    /* ===== GA4 - view_cart ===== */
+    // 🔥 GA4 view_cart
     window.dataLayer = window.dataLayer || [];
-    dataLayer.push({
+    window.dataLayer.push({
       event: "view_cart",
       ecommerce: {
         currency: "USD",
-        value: totalValue,
-        items: cart.map(item => ({
-          item_id: item.item_id,
-          item_name: item.item_name,
-          item_category: item.item_category,
-          price: item.price,
-          quantity: item.quantity
-        }))
+        value: total,
+        items: cart
       }
     });
-  </script>
+
+    console.log("view_cart enviado", cart);
+  }
+</script>
 
 </body>
 </html>
