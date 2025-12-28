@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Accessory Store – Produto</title>
+
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){
+      w[l]=w[l]||[];
+      w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),
+          dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;
+      j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NTLKR2NJ');
+  </script>
+  <!-- End GTM -->
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 40px;
+    }
+    .product {
+      background: #fff;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 { margin-bottom: 10px; }
+    .category { color: #777; margin-bottom: 15px; }
+    .price {
+      color: green;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="product">
+  <h1 id="item_name"></h1>
+  <div class="category" id="item_category"></div>
+  <div class="price" id="item_price"></div>
+
+  <button id="addToCart">Adicionar ao carrinho</button>
+</div>
+
+<script>
+  /* ====== BASE DE PRODUTOS (demo) ====== */
+  const products = {
+    A001: { name: "Wireless Headphones Pro", category: "Audio", price: 99.00 },
+    A002: { name: "Noise Cancelling Headphones", category: "Audio", price: 129.00 },
+    W001: { name: "Smartwatch Active", category: "Wearables", price: 149.00 },
+    C001: { name: "Fast Charger 65W", category: "Charging", price: 39.00 },
+    M001: { name: "Shockproof Phone Case", category: "Mobile Accessories", price: 25.00 }
+  };
+
+  /* ====== LÊ PRODUTO DA URL ====== */
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id") || "A001";
+  const product = products[productId];
+
+  /* ====== RENDER ====== */
+  document.getElementById("item_name").innerText = product.name;
+  document.getElementById("item_category").innerText = product.category;
+  document.getElementById("item_price").innerText = `US$ ${product.price.toFixed(2)}`;
+
+  /* ====== VIEW_ITEM (GA4) ====== */
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: "USD",
+      value: product.price,
+      items: [{
+        item_id: productId,
+        item_name: product.name,
+        item_category: product.category,
+        price: product.price,
+        quantity: 1
+      }]
+    }
+  });
+
+  /* ====== ADD_TO_CART ====== */
+  document.getElementById("addToCart").addEventListener("click", function () {
+    window.dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: "USD",
+        value: product.price,
+        items: [{
+          item_id: productId,
+          item_name: product.name,
+          item_category: product.category,
+          price: product.price,
+          quantity: 1
+        }]
+      }
+    });
+    alert("Produto adicionado ao carrinho (evento enviado)");
+  });
+</script>
+
+</body>
+</html>
