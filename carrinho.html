@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Carrinho | Accessory Store</title>
+  <title>Accessory Store – Carrinho</title>
 
   <!-- Google Tag Manager -->
   <script>
@@ -25,72 +25,53 @@
       background: #f5f5f5;
       padding: 40px;
     }
-    .box {
+    .cart {
       background: #fff;
       padding: 30px;
       max-width: 600px;
       margin: auto;
       border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .item {
       border-bottom: 1px solid #ddd;
-      padding: 10px 0;
+      padding: 15px 0;
+    }
+    .item:last-child {
+      border-bottom: none;
     }
     .price {
       color: green;
       font-weight: bold;
+    }
+    .total {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .empty {
+      text-align: center;
+      color: #666;
     }
   </style>
 </head>
 
 <body>
 
+<!-- Google Tag Manager (noscript) -->
 <noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTLKR2NJ"
+  <iframe src="https://www.googletmanager.com/ns.html?id=GTM-NTLKR2NJ"
           height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
+<!-- End GTM (noscript) -->
 
-<div class="box">
+<div class="cart">
   <h1>Carrinho</h1>
-  <div id="cart"></div>
+  <div id="cart-items"></div>
+  <div class="total" id="cart-total"></div>
 </div>
 
 <script>
-  const cartContainer = document.getElementById("cart");
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  window.dataLayer = window.dataLayer || [];
 
-  if (cart.length === 0) {
-    cartContainer.innerHTML = "<p>Seu carrinho está vazio.</p>";
-  } else {
-    let total = 0;
-
-    cart.forEach(item => {
-      total += item.price * item.quantity;
-
-      cartContainer.innerHTML += `
-        <div class="item">
-          <strong>${item.item_name}</strong><br>
-          Categoria: ${item.item_category}<br>
-          Quantidade: ${item.quantity}<br>
-          <span class="price">US$ ${item.price}</span>
-        </div>
-      `;
-    });
-
-    // 🔥 GA4 view_cart
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "view_cart",
-      ecommerce: {
-        currency: "USD",
-        value: total,
-        items: cart
-      }
-    });
-
-    console.log("view_cart enviado", cart);
-  }
-</script>
-
-</body>
-</html>
+  const cartContainer = document.getElementById('
