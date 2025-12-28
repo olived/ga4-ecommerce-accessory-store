@@ -1,152 +1,111 @@
-GA4 E-commerce Tracking – Accessory Store (Portfolio Project)
+# GA4 E-commerce Tracking – Portfolio Project
 
-This is a portfolio project focused on implementing a complete GA4 e-commerce tracking setup using Google Tag Manager, dataLayer, and advanced debugging, fully prepared for analytical consumption in Looker Studio.
+## Overview
+This project demonstrates a complete **GA4 E-commerce tracking implementation** built from scratch for portfolio purposes.  
+The goal is to showcase best practices in **event tracking, Google Tag Manager setup, and analytical readiness for Looker Studio dashboards**.
 
-IMPORTANT:
-This project uses a fictitious e-commerce store created exclusively for study and portfolio purposes.
+All data, products, and flows were intentionally created to simulate a real-world e-commerce scenario.
 
+---
 
-PROJECT GOAL
+## Architecture
 
-The main objective of this project is to demonstrate, end to end, how to implement a professional GA4 e-commerce tracking setup, covering:
-
-- GA4 standard e-commerce events
-- Proper dataLayer structure
-- Google Tag Manager configuration (tags, triggers, variables)
-- Event validation using Tag Assistant and GA4 DebugView
-- Analytics-ready foundation for Looker Studio dashboards
-
-
-TRACKING ARCHITECTURE
-
-User
-  |
-  v
-Website (HTML + JavaScript)
-  |
-  v
-dataLayer.push()
-  |
-  v
-Google Tag Manager (GTM)
-  |
-  v
-Google Analytics 4 (GA4)
-  |
-  v
+User  
+↓  
+Website (HTML + JavaScript)  
+↓  
+dataLayer.push()  
+↓  
+Google Tag Manager (GTM)  
+↓  
+Google Analytics 4 (GA4)  
+↓  
 Looker Studio (Analytics Layer)
 
+---
 
-DEMO STORE OVERVIEW
+## GA4 E-commerce Events Implemented
 
-The project simulates a tech accessories e-commerce store with:
+All events follow the **official GA4 E-commerce specification**, including the `items[]` array.
 
-- Product listing page
-- Product detail page
-- Functional shopping cart flow
-- Cart persistence using localStorage
+| Event Name       | Description                               |
+|-----------------|-------------------------------------------|
+| view_item_list  | Product list visualization                |
+| view_item       | Product detail view                       |
+| add_to_cart     | Product added to cart                     |
+| view_cart       | Cart visualization                        |
 
-Front-end technologies used:
-- HTML5
-- CSS3
-- Vanilla JavaScript
+---
 
+## Shopping Cart Logic
 
-IMPLEMENTED GA4 EVENTS
+- Cart persistence implemented using **localStorage**
+- Quantity increment logic supported
+- Total cart value dynamically calculated
+- Cart state restored on page reload
 
-All events follow the official GA4 E-commerce specification, including the items[] array.
+---
 
-Event Name        Description
------------------------------------------------
-view_item_list   Product list view
-view_item        Product detail view
-add_to_cart      Add product to cart
-view_cart        Cart view
+## Google Tag Manager (GTM)
 
+### Components Created
 
-DATALAYER STRUCTURE EXAMPLE
+**Triggers**
+- Custom Events based on `dataLayer` events
 
-Example of the dataLayer payload sent to GA4:
-
-dataLayer.push({
-  event: "view_cart",
-  ecommerce: {
-    currency: "USD",
-    value: 297,
-    items: [
-      {
-        item_id: "A001",
-        item_name: "Wireless Headphones Pro",
-        item_category: "Audio",
-        price: 99,
-        quantity: 3
-      }
-    ]
-  }
-});
-
-
-GOOGLE TAG MANAGER SETUP
-
-Components created:
-
-Triggers:
-- Custom events based on dataLayer
+**Tags**
+- GA4 Configuration Tag
+- GA4 Event Tags for:
   - view_item_list
   - view_item
   - add_to_cart
   - view_cart
 
-Tags:
-- GA4 Event Tags
-  - One tag per e-commerce event
-
-Custom JavaScript Variables:
+**Custom JavaScript Variables**
 - JS – Ecommerce Items
 - JS – Ecommerce Value
 
-All triggers and tags were configured following GA4 best practices.
+All triggers and tags follow GA4 best practices.
 
+---
 
-VALIDATION AND DEBUGGING
+## Validation & Debugging
 
-The project was validated using:
+The implementation was validated using:
 
 - Google Tag Assistant
-- Google Tag Manager Preview Mode
+- GTM Preview Mode
 - GA4 DebugView
 
-Validations performed:
-- Correct event firing
-- Proper e-commerce payload structure
-- Variables resolving correctly in GTM
-- Events marked as completed in Tag Assistant
-- Events visible in GA4 DebugView in real time
+### Validations Performed
+- Correct firing of all GA4 events
+- Validation of `items[]` structure
+- Currency and value consistency
+- Proper event sequencing
 
+---
 
-LOOKER STUDIO READINESS
+## Technologies Used
 
-The tracking setup is fully prepared for Looker Studio dashboards, enabling analysis such as:
+- HTML5
+- JavaScript (Vanilla)
+- Google Tag Manager
+- Google Analytics 4
+- Looker Studio (data-ready)
 
-- Product views
-- Add to cart actions
-- Cart views
-- Total cart value
-- Navigation funnel (list → product → cart)
+---
 
-The visualization layer can be built directly on top of the implemented GA4 events.
+## Portfolio Notes
 
+This project was designed exclusively for **demonstration and portfolio purposes**.  
+No real users or transactions are involved.
 
-NEXT STEPS (ROADMAP)
+It reflects a production-like GA4 tracking setup that can be applied to real e-commerce environments.
 
-- Implement begin_checkout event
-- Implement purchase event (simulated checkout)
-- Build Looker Studio dashboard
-- Add validation screenshots (GA4 and GTM)
-- Extend cart to support multiple different products
+---
 
+## Author
 
-AUTHOR
-
-This project was developed as a professional analytics portfolio case, focusing on GA4, Google Tag Manager, and Looker Studio best practices.
-
+Daniel Gomes de Oliveira  
+Data & Analytics Consultant  
+Specialized in GA4, GTM, BI & Data Engineering
